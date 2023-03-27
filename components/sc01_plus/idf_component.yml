@@ -1,0 +1,10 @@
+version: "1.0.0"
+description: Board Support Package for SC01 Plus
+# url: https://github.com/espressif/esp-bsp/SquareLine/boards/custom_waveshare_7inch/components/ws_7inch
+
+dependencies:
+  idf: ">=5.0"
+  esp_lcd_touch_ft5x06: "^1.0"
+
+  esp_lvgl_port:
+    version: ^1
