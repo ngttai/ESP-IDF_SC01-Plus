@@ -1,15 +1,15 @@
 # file(GLOB_RECURSE IMAGE_SOURCES lvgl_demo_ui/images/*.c)
 # file(GLOB_RECURSE DEMO_UI_SOURCES lvgl_demo_ui/*.c)
 
-# idf_component_register(SRCS "main.c" ${DEMO_UI_SOURCES} ${IMAGE_SOURCES}
+# idf_component_register(SRCS ${DEMO_UI_SOURCES} ${IMAGE_SOURCES}
 #                        INCLUDE_DIRS ".")
 
 set(LV_DEMO_DIR ../managed_components/lvgl__lvgl/demos)
 file(GLOB_RECURSE LV_DEMOS_SOURCES ${LV_DEMO_DIR}/*.c)
 
 idf_component_register(
-    SRCS "dispaly_lvgl_demos_main.c" ${LV_DEMOS_SOURCES}
-    # SRCS "main.c" ${LV_DEMOS_SOURCES}
+    SRCS ${LV_DEMOS_SOURCES}
+    SRCS "main.c" ${LV_DEMOS_SOURCES}
     INCLUDE_DIRS "." ${LV_DEMO_DIR})
 
 set_source_files_properties(

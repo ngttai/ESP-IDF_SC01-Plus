@@ -186,7 +186,7 @@ static lv_disp_t *bsp_display_lcd_init(void)
         /* Rotation values must be same as used in esp_lcd for initial settings of the screen */
         .rotation = {
             .swap_xy = false,
-            .mirror_x = false,
+            .mirror_x = true,
             .mirror_y = false,
         },
         .flags = {
