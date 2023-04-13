@@ -10,6 +10,7 @@
 
 #include "lv_demos.h"
 #include "bsp/esp-bsp.h"
+#include "sdmmc_cmd.h" // for sdmmc_card_print_info
 
 static char *TAG = "app_main";
 
@@ -39,8 +40,16 @@ void app_main(void)
     // lv_demo_stress();       /* A stress test for LVGL. */
     // lv_demo_benchmark();    /* A demo to measure the performance of LVGL or to compare different settings. */
     bsp_display_unlock();
-
     bsp_display_brightness_set(20);
+
+    // Mount uSD card
+    if (ESP_OK == bsp_sdcard_mount()) {
+        sdmmc_card_print_info(stdout, bsp_sdcard);
+        FILE *f = fopen(BSP_MOUNT_POINT "/hello.txt", "w");
+        fprintf(f, "Hello %s!\n", bsp_sdcard->cid.name);
+        fclose(f);
+        bsp_sdcard_unmount();
+    }
 
 #if LOG_MEM_INFO
     static char buffer[128];    /* Make sure buffer is enough for `sprintf` */

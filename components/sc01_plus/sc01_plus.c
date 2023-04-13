@@ -7,6 +7,7 @@
 #include "esp_timer.h"
 #include "driver/gpio.h"
 #include "driver/ledc.h"
+#include "driver/spi_master.h"
 #include "esp_err.h"
 #include "esp_log.h"
 #include "esp_lcd_panel_io.h"
@@ -17,9 +18,15 @@
 #include "esp_lcd_panel_st7796.h"
 #include "esp_lcd_touch_ft5x06.h"
 #include "esp_lvgl_port.h"
+#include "esp_vfs_fat.h"
 #include "bsp_err_check.h"
 
 static const char *TAG = "SC01_Plus";
+
+static lv_disp_t *disp;
+static lv_indev_t *disp_indev = NULL;
+static esp_lcd_touch_handle_t tp;   // LCD touch handle
+sdmmc_card_t *bsp_sdcard = NULL;    // Global uSD card handler
 
 esp_err_t bsp_i2c_init(void)
 {
@@ -43,6 +50,43 @@ esp_err_t bsp_i2c_deinit(void)
 {
     BSP_ERROR_CHECK_RETURN_ERR(i2c_driver_delete(BSP_I2C_NUM));
     return ESP_OK;
+}
+
+esp_err_t bsp_sdcard_mount(void)
+{
+    const esp_vfs_fat_sdmmc_mount_config_t mount_config = {
+#ifdef CONFIG_BSP_SD_FORMAT_ON_MOUNT_FAIL
+        .format_if_mount_failed = true,
+#else
+        .format_if_mount_failed = false,
+#endif
+        .max_files = 5,
+        .allocation_unit_size = 16 * 1024
+    };
+
+    const sdmmc_host_t host = SDSPI_HOST_DEFAULT();
+    const spi_bus_config_t bus_cfg = {
+        .mosi_io_num = BSP_SD_MOSI,
+        .miso_io_num = BSP_SD_MISO,
+        .sclk_io_num = BSP_SD_CLK,
+        .quadwp_io_num = -1,
+        .quadhd_io_num = -1,
+        .max_transfer_sz = 4000,
+    };
+    BSP_ERROR_CHECK_RETURN_ERR(spi_bus_initialize(host.slot, &bus_cfg, SDSPI_DEFAULT_DMA));
+    
+    // This initializes the slot without card detect (CD) and write protect (WP) signals.
+    // Modify slot_config.gpio_cd and slot_config.gpio_wp if your board has these signals.
+    sdspi_device_config_t slot_config = SDSPI_DEVICE_CONFIG_DEFAULT();
+    slot_config.gpio_cs = BSP_SD_CS;
+    slot_config.host_id = host.slot;
+
+    return esp_vfs_fat_sdspi_mount(BSP_MOUNT_POINT, &host, &slot_config, &mount_config, &bsp_sdcard);
+}
+
+esp_err_t bsp_sdcard_unmount(void)
+{
+    return esp_vfs_fat_sdcard_unmount(BSP_MOUNT_POINT, bsp_sdcard);
 }
 
 // Bit number used to represent command and parameter
@@ -199,8 +243,6 @@ static lv_disp_t *bsp_display_lcd_init(void)
 
 static lv_indev_t *bsp_display_indev_init(lv_disp_t *disp)
 {
-    esp_lcd_touch_handle_t tp;
-
     /* Initialize touch */
     const esp_lcd_touch_config_t tp_cfg = {
         .x_max = BSP_LCD_V_RES,
@@ -234,11 +276,11 @@ static lv_indev_t *bsp_display_indev_init(lv_disp_t *disp)
 
 lv_disp_t *bsp_display_start(void)
 {
-    lv_disp_t *disp = NULL;
     const lvgl_port_cfg_t lvgl_cfg = ESP_LVGL_PORT_INIT_CONFIG();
     BSP_ERROR_CHECK_RETURN_NULL(lvgl_port_init(&lvgl_cfg));
     BSP_NULL_CHECK(disp = bsp_display_lcd_init(), NULL);
-    BSP_NULL_CHECK(bsp_display_indev_init(disp), NULL);
+    BSP_NULL_CHECK(disp_indev = bsp_display_indev_init(disp), NULL);
+
     return disp;
 }
 
