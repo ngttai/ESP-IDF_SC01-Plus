@@ -11,11 +11,10 @@
 #include "esp_err.h"
 #include "esp_log.h"
 #include "esp_lcd_panel_io.h"
-#include "esp_lcd_panel_vendor.h"
 #include "esp_lcd_panel_ops.h"
 
 #include "bsp/sc01_plus.h"
-#include "esp_lcd_panel_st7796.h"
+#include "esp_lcd_st7796.h"
 #include "esp_lcd_touch_ft5x06.h"
 #include "esp_lvgl_port.h"
 #include "esp_vfs_fat.h"
