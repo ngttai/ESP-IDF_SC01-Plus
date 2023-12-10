@@ -36,10 +36,12 @@ static const char *TAG = "SC01_Plus";
 #define SC01_PLUS_PIN_NUM_DATA6          16
 #define SC01_PLUS_PIN_NUM_DATA7          15
 #define SC01_PLUS_PIN_NUM_PCLK           47
-#define SC01_PLUS_PIN_NUM_CS             -1
+#define SC01_PLUS_PIN_NUM_CS             (-1)
 #define SC01_PLUS_PIN_NUM_DC             0
 #define SC01_PLUS_PIN_NUM_RST            4
 #define SC01_PLUS_PIN_NUM_BK_LIGHT       45
+#define SC01_PLUS_PIN_NUM_TP_INT         7
+#define SC01_PLUS_PIN_NUM_TP_RST         (-1) // HW used GPIO 4. But if enable the LCD not show.
 
 #define SC01_PLUS_LCD_I80_BUS_WIDTH      8
 
@@ -212,8 +214,8 @@ void app_main(void)
     esp_lcd_touch_config_t tp_cfg = {
         .x_max = SC01_PLUS_LCD_V_RES,
         .y_max = SC01_PLUS_LCD_H_RES,
-        .rst_gpio_num = 4,
-        .int_gpio_num = 7,
+        .rst_gpio_num = SC01_PLUS_PIN_NUM_TP_RST,
+        .int_gpio_num = SC01_PLUS_PIN_NUM_TP_INT,
         .flags = {
             .swap_xy = 0,
             .mirror_x = 0,
