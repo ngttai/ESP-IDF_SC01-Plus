@@ -5,6 +5,5 @@ description: Board Support Package for SC01 Plus
 dependencies:
   idf: ">=5.0"
   esp_lcd_touch_ft5x06: "^1.0"
-
   esp_lvgl_port:
     version: ^1

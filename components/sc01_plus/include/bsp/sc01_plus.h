@@ -37,7 +37,7 @@
 #define BSP_LCD_TE           (GPIO_NUM_48) // Frame sync
 #define BSP_LCD_BACKLIGHT    (GPIO_NUM_45) // Backlight control, active high
 #define BSP_LCD_TP_INT       (GPIO_NUM_7)  // Touch interrupt
-#define BSP_LCD_TP_RST       (GPIO_NUM_4)  // Touch reset, multiplexed with LCD reset
+#define BSP_LCD_TP_RST       (GPIO_NUM_NC) // Disable (GPIO_NUM_4)  // Touch reset, multiplexed with LCD reset. 
 
 /* uSD card */
 #define BSP_SD_MOSI            (GPIO_NUM_40)

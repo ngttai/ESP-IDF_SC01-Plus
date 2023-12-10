@@ -35,10 +35,18 @@ void app_main(void)
 
     ESP_LOGI(TAG, "Display LVGL demo");
     bsp_display_lock(0);
-    // lv_demo_widgets();      /* A widgets example */
+#if CONFIG_LV_USE_DEMO_WIDGETS
+    lv_demo_widgets();      /* A widgets example */
+#elif CONFIG_LV_USE_DEMO_MUSIC
     lv_demo_music();        /* A modern, smartphone-like music player demo. */
-    // lv_demo_stress();       /* A stress test for LVGL. */
-    // lv_demo_benchmark();    /* A demo to measure the performance of LVGL or to compare different settings. */
+#elif CONFIG_LV_USE_DEMO_STRESS
+    lv_demo_stress();       /* A stress test for LVGL. */
+#elif CONFIG_LV_USE_DEMO_BENCHMARK
+    lv_demo_benchmark();    /* A demo to measure the performance of LVGL or to compare different settings. */
+#else
+#error "Not Supported!"
+#endif
+
     bsp_display_unlock();
     bsp_display_brightness_set(20);
 
