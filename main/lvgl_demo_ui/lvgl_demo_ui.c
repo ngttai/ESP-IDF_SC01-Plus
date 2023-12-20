@@ -7,6 +7,8 @@
 #include <math.h>
 #include "lvgl.h"
 
+#include "lvgl_demo_ui.h"
+
 #ifndef PI
 #define PI  (3.14159f)
 #endif
@@ -123,7 +125,7 @@ static void btn_cb(lv_event_t * e)
     start_animation(scr);
 }
 
-void sc01_plus_lvgl_demo_ui(lv_disp_t *disp)
+void esp_lvgl_demo_ui(lv_disp_t *disp)
 {
     lv_obj_t *scr = lv_disp_get_scr_act(disp);
 
@@ -135,7 +137,7 @@ void sc01_plus_lvgl_demo_ui(lv_disp_t *disp)
     lv_obj_t * lbl = lv_label_create(btn);
     lv_label_set_text_static(lbl, LV_SYMBOL_REFRESH" SHOW AGAIN");
     lv_obj_set_style_text_font(lbl, &lv_font_montserrat_20, 0);
-    lv_obj_align(btn, LV_ALIGN_BOTTOM_LEFT, 30, -30);
+    lv_obj_align(btn, LV_ALIGN_BOTTOM_LEFT, 20, -20);
     // Button event
     lv_obj_add_event_cb(btn, btn_cb, LV_EVENT_CLICKED, scr);
 

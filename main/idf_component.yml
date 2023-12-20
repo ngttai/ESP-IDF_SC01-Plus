@@ -1,4 +1,5 @@
 dependencies:
   idf: ">=5.0"
-  lvgl/lvgl: "^8.3"
-  esp_lcd_touch_ft5x06: "^1.0"
+  sc01_plus:
+    path: ../components
+    version: ^1
