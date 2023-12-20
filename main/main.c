@@ -12,7 +12,9 @@
 #include "bsp/esp-bsp.h"
 #include "sdmmc_cmd.h" // for sdmmc_card_print_info
 
-static char *TAG = "app_main";
+#include "lvgl_demo_ui.h"
+
+static const char *TAG = "app_main";
 
 #define LOG_MEM_INFO    (0)
 
@@ -44,7 +46,7 @@ void app_main(void)
 #elif CONFIG_LV_USE_DEMO_BENCHMARK
     lv_demo_benchmark();    /* A demo to measure the performance of LVGL or to compare different settings. */
 #else
-#error "Not Supported!"
+    esp_lvgl_demo_ui(disp); /* A custom demo from espressif */
 #endif
 
     bsp_display_unlock();
