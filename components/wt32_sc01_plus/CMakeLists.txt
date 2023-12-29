@@ -1,5 +1,5 @@
 idf_component_register(
-    SRCS "sc01_plus.c"
+    SRCS "wt32_sc01_plus.c"
     INCLUDE_DIRS "include"
     PRIV_INCLUDE_DIRS "priv_include"
     REQUIRES driver

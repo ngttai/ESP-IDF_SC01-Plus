@@ -1,8 +1,3 @@
-/*
- * SPDX-FileCopyrightText: 2022 Espressif Systems (Shanghai) CO LTD
- *
- * SPDX-License-Identifier: CC0-1.0
- */
 
 #include "esp_timer.h"
 #include "driver/gpio.h"
@@ -13,7 +8,7 @@
 #include "esp_lcd_panel_io.h"
 #include "esp_lcd_panel_ops.h"
 
-#include "bsp/sc01_plus.h"
+#include "bsp/wt32_sc01_plus.h"
 #include "esp_lcd_st7796.h"
 #include "esp_lcd_touch_ft5x06.h"
 #include "esp_lvgl_port.h"
